@@ -1,0 +1,103 @@
+index.html <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dime Qué Cocino</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #fff8e1;
+      margin: 0;
+      padding: 1rem;
+    }
+    h1 {
+      color: #d35400;
+      text-align: center;
+    }
+    input, button {
+      width: 100%;
+      padding: 0.7rem;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #e67e22;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d35400;
+    }
+    .receta {
+      background: #fef5e7;
+      border: 1px solid #f5cba7;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dime Qué Cocino 🍳</h1>
+  <p>Escribe los ingredientes que tienes (separados por comas):</p>
+  <input id="ingredientes" placeholder="Ej: huevo, arroz, tomate" />
+  <button onclick="buscar()">Buscar receta</button>
+  <div id="resultado"></div>
+
+  <script>
+    const recetas = [
+      {
+        nombre: "Huevos revueltos",
+        ingredientes: ["huevo", "sal", "aceite"],
+        pasos: "Bate los huevos, agrégales sal y cocínalos en sartén con un poco de aceite."
+      },
+      {
+        nombre: "Arroz con huevo",
+        ingredientes: ["arroz", "huevo", "aceite"],
+        pasos: "Cocina el arroz, fríe un huevo y sírvelo encima. ¡Listo!"
+      },
+      {
+        nombre: "Ensalada de tomate",
+        ingredientes: ["tomate", "sal", "aceite"],
+        pasos: "Corta el tomate en rodajas, agrega sal y un chorrito de aceite."
+      },
+      {
+        nombre: "Arroz blanco",
+        ingredientes: ["arroz", "agua", "sal"],
+        pasos: "Hierve el agua con sal, agrega el arroz y cocina a fuego medio."
+      }
+    ];
+
+    function buscar() {
+      const entrada = document.getElementById("ingredientes").value.toLowerCase();
+      const disponibles = entrada.split(",").map(i => i.trim());
+      const resultado = document.getElementById("resultado");
+      resultado.innerHTML = "";
+
+      const encontradas = recetas.filter(receta =>
+        receta.ingredientes.every(i => disponibles.includes(i))
+      );
+
+      if (encontradas.length === 0) {
+        resultado.innerHTML = "<p>No se encontró ninguna receta con esos ingredientes.</p>";
+        return;
+      }
+
+      encontradas.forEach(receta => {
+        const div = document.createElement("div");
+        div.className = "receta";
+        div.innerHTML = `
+          <h3>${receta.nombre}</h3>
+          <p><strong>Ingredientes:</strong> ${receta.ingredientes.join(", ")}</p>
+          <p><strong>Pasos:</strong> ${receta.pasos}</p>
+        `;
+        resultado.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
